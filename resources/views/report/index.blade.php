@@ -15,8 +15,8 @@
                         <input type="hidden" id="tpsID" value="">
                         <div class="form-group">
                             <label class="form-label" for="tps">TPS</label>
-                            <input class="form-control" id="tps" type="text" placeholder="TPS 001"
-                                value="TPS 0001" readonly>
+                            <input class="form-control" id="tps" type="text" placeholder="TPS 001" value="TPS 0001"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="coordinates">Titik Koordinat</label>
@@ -29,96 +29,75 @@
                         </div>
 
 
+                        @php
+                            $photos = [
+                                ['label' => 'FOTO DPT', 'name' => 'dpt_photo', 'id' => 1],
+                                ['label' => 'FOTO C6', 'name' => 'c6_photo', 'id' => 2],
+                                ['label' => 'FOTO C1', 'name' => 'c1_photo', 'id' => 3],
+                                ['label' => 'FOTO CPLANO', 'name' => 'cplano_photo', 'id' => 4],
+                            ];
+                        @endphp
+
                         <div class="row">
-                            <div class="col-6 mt-3">
-                                <div class="element-heading mb-3">
-                                    <span>FOTO DPT</span>
-                                </div>
-                                <div class="form-group">
-                                    <div class="image-upload-box" id="uploadArea1"
-                                        style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
-                                        <img id="previewImage1" class="d-none"
-                                            style="max-width: 100%; height: 78px; border-radius: 8px;" />
-                                        <img id="uploadIcon1" class="w-75" src="{{ asset('img/icon-image-upload.svg') }}"
-                                            alt="Upload Icon">
-                                        <span id="uploadText1" class="mb-4" style="font-size: 12px;">Upload Foto</span>
+                            @foreach ($photos as $photo)
+                                <div class="col-6 mt-3">
+                                    <div class="element-heading mb-3">
+                                        <span>{{ $photo['label'] }}</span>
                                     </div>
-                                    <input class="form-control d-none" name="dpt_photo" id="customFile1" type="file"
-                                        accept="image/*">
-                                    <button class="btn btn-secondary mt-2 d-none" id="previewButton1"
-                                        type="button">Preview</button>
+                                    <div class="form-group">
+                                        <div class="image-upload-box" id="uploadArea{{ $photo['id'] }}"
+                                            style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;"
+                                            data-bs-toggle="modal" data-bs-target="#uploadModal"
+                                            data-photo-id="{{ $photo['id'] }}">
+                                            <img id="previewImage{{ $photo['id'] }}" class="d-none"
+                                                style="max-width: 100%; height: 78px; border-radius: 8px;" />
+                                            <img id="uploadIcon{{ $photo['id'] }}" class="w-75"
+                                                src="{{ asset('img/icon-image-upload.svg') }}" alt="Upload Icon">
+                                            <span id="uploadText{{ $photo['id'] }}" class="mb-4"
+                                                style="font-size: 12px;">Upload Foto</span>
+                                        </div>
+                                        <input class="form-control d-none" name="{{ $photo['name'] }}"
+                                            id="customFile{{ $photo['id'] }}" type="file" accept="image/*">
+                                        <button type="button" class="btn btn-secondary mt-2 d-none"
+                                            id="previewButton{{ $photo['id'] }}" type="button">Preview</button>
+                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
+                        </div>
 
-                            <div class="col-6 mt-3">
-                                <div class="element-heading mb-3">
-                                    <span>FOTO C6</span>
-                                </div>
-                                <div class="form-group">
-                                    <div class="image-upload-box" id="uploadArea2"
-                                        style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
-                                        <img id="previewImage2" class="d-none"
-                                            style="max-width: 100%; height: 78px; border-radius: 8px;" />
-                                        <img id="uploadIcon2" class="w-75" src="{{ asset('img/icon-image-upload.svg') }}"
-                                            alt="Upload Icon">
-                                        <span id="uploadText2" class="mb-4" style="font-size: 12px;">Upload Foto</span>
+                        <div class="modal" tabindex="-1" id="uploadModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Pilih Metode Upload</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
-                                    <input class="form-control d-none" name="c6_photo" id="customFile2" type="file"
-                                        accept="image/*">
-                                    <button class="btn btn-secondary mt-2 d-none" id="previewButton2"
-                                        type="button">Preview</button>
-                                </div>
-                            </div>
-
-                            <div class="col-6 mt-3">
-                                <div class="element-heading mb-3">
-                                    <span>FOTO C1</span>
-                                </div>
-                                <div class="form-group">
-                                    <div class="image-upload-box" id="uploadArea3"
-                                        style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
-                                        <img id="previewImage3" class="d-none"
-                                            style="max-width: 100%; height: 78px; border-radius: 8px;" />
-                                        <img id="uploadIcon3" class="w-75" src="{{ asset('img/icon-image-upload.svg') }}"
-                                            alt="Upload Icon">
-                                        <span id="uploadText3" class="mb-4" style="font-size: 12px;">Upload Foto</span>
+                                    <div class="modal-body">
+                                        <button type="button" class="btn btn-primary w-100" id="uploadFromFolder">Upload
+                                            dari
+                                            Folder</button>
+                                        <button type="button" class="btn btn-secondary w-100 mt-3"
+                                            id="uploadFromCamera">Gunakan
+                                            Kamera</button>
+                                        <div class="mt-3 d-none" id="cameraSection">
+                                            <video id="cameraPreview"
+                                                style="max-width: 100%; height: auto; border-radius: 8px;" autoplay></video>
+                                            <button type="button" class="btn btn-danger w-100 mt-3" id="takePhoto">Ambil
+                                                Foto</button>
+                                        </div>
                                     </div>
-                                    <input class="form-control d-none" name="c1_photo" id="customFile3" type="file"
-                                        accept="image/*">
-                                    <button class="btn btn-secondary mt-2 d-none" id="previewButton3"
-                                        type="button">Preview</button>
-                                </div>
-                            </div>
-
-                            <div class="col-6 mt-3">
-                                <div class="element-heading mb-3">
-                                    <span>FOTO CPLANO</span>
-                                </div>
-                                <div class="form-group">
-                                    <div class="image-upload-box" id="uploadArea4"
-                                        style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
-                                        <img id="previewImage4" class="d-none"
-                                            style="max-width: 100%; height: 78px; border-radius: 8px;" />
-                                        <img id="uploadIcon4" class="w-75"
-                                            src="{{ asset('img/icon-image-upload.svg') }}" alt="Upload Icon">
-                                        <span id="uploadText4" class="mb-4" style="font-size: 12px;">Upload Foto</span>
-                                    </div>
-                                    <input class="form-control d-none" name="cplano_photo" id="customFile4"
-                                        type="file" accept="image/*">
-                                    <button class="btn btn-secondary mt-2 d-none" id="previewButton4"
-                                        type="button">Preview</button>
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="row" id="paslon-container">
                         </div>
 
                         <div class="form-group mt-3">
                             <label class="form-label" for="totalVotesInput">Input Juml. surat suara</label>
-                            <input class="form-control" id="totalVotesInput" type="text"
-                                placeholder="Input jumlah suara" oninput="calculateTotal()">
+                            <input class="form-control" id="totalVotesInput" type="text" placeholder="Input jumlah suara"
+                                oninput="calculateTotal()">
                         </div>
 
                         <div class="form-group mt-3">
@@ -180,27 +159,6 @@
             </div>
         </div>
     </div>
-
-
-    <!-- Modal for upload options -->
-    <div class="modal" tabindex="-1" id="uploadModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Pilih Metode Upload</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <button class="btn btn-primary w-100" id="uploadFromFolder">Upload dari Folder</button>
-                    <button class="btn btn-secondary w-100 mt-3" id="uploadFromCamera">Gunakan Kamera</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <video id="cameraPreview" class="d-none" style="max-width: 100%; height: 78px; border-radius: 8px;" autoplay></video>
-
-    <input class="form-control d-none" name="dpt_photo" id="customFile1" type="file" accept="image/*">
 @endsection
 
 @section('scripts')
@@ -314,6 +272,11 @@
                         paslon
                     } = response.data.data;
 
+                    if (tps.status === 1) {
+                        window.location.href = '/report/success';
+                        return;
+                    }
+
                     localStorage.setItem('tpsData', JSON.stringify(response.data.data));
 
                     const tpsID = document.getElementById('tpsID');
@@ -417,12 +380,50 @@
             const tpsData = JSON.parse(localStorage.getItem('tpsData'));
             const tpsID = tpsData.tps.id;
             const apiUrl = `https://api.nxwtomoka.site/api/v1/tps/by-user/store/${tpsID}`;
+            const token = localStorage.getItem('token');
+
+            // Data related to input
+            const fields = [{
+                    name: 'dpt_photo',
+                    previewImageId: 'previewImage1',
+                    uploadAreaId: 'uploadArea1',
+                    uploadIconId: 'uploadIcon1',
+                    uploadTextId: 'uploadText1',
+                    previewButtonId: 'previewButton1',
+                    customFileId: 'customFile1'
+                },
+                {
+                    name: 'c6_photo',
+                    previewImageId: 'previewImage2',
+                    uploadAreaId: 'uploadArea2',
+                    uploadIconId: 'uploadIcon2',
+                    uploadTextId: 'uploadText2',
+                    previewButtonId: 'previewButton2',
+                    customFileId: 'customFile2'
+                },
+                {
+                    name: 'c1_photo',
+                    previewImageId: 'previewImage3',
+                    uploadAreaId: 'uploadArea3',
+                    uploadIconId: 'uploadIcon3',
+                    uploadTextId: 'uploadText3',
+                    previewButtonId: 'previewButton3',
+                    customFileId: 'customFile3'
+                },
+                {
+                    name: 'cplano_photo',
+                    previewImageId: 'previewImage4',
+                    uploadAreaId: 'uploadArea4',
+                    uploadIconId: 'uploadIcon4',
+                    uploadTextId: 'uploadText4',
+                    previewButtonId: 'previewButton4',
+                    customFileId: 'customFile4'
+                }
+            ];
 
             function uploadImage(file, fieldName) {
                 const formData = new FormData();
                 formData.append(fieldName, file);
-
-                const token = localStorage.getItem('token');
 
                 fetch(apiUrl, {
                         method: 'POST',
@@ -434,99 +435,71 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Upload successful:', data);
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadModal'));
+                        modal.hide();
                     })
-                    .catch(error => {
-                        console.error('Upload failed:', error);
-                    });
+                    .catch(error => console.error('Upload failed:', error));
             }
 
-            function handleFileInputChange(event, previewImageId, uploadIconId, uploadTextId, previewButtonId,
-                fieldName) {
+
+            function handleFileInputChange(event, field) {
                 const file = event.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        document.getElementById(previewImageId).src = e.target.result;
-                        document.getElementById(previewImageId).classList.remove('d-none');
-                        document.getElementById(uploadIconId).classList.add('d-none');
-                        document.getElementById(uploadTextId).classList.add('d-none');
-                        document.getElementById(previewButtonId).classList.remove('d-none');
+                        document.getElementById(field.previewImageId).src = e.target.result;
+                        document.getElementById(field.previewImageId).classList.remove('d-none');
+                        document.getElementById(field.uploadIconId).classList.add('d-none');
+                        document.getElementById(field.uploadTextId).classList.add('d-none');
+                        document.getElementById(field.previewButtonId).classList.remove('d-none');
                     };
                     reader.readAsDataURL(file);
-
-                    uploadImage(file, fieldName);
+                    uploadImage(file, field.name);
                 }
             }
 
             const tpsApiUrl = 'https://api.nxwtomoka.site/api/v1/tps/by-user';
             const tpsHeaders = {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${token}`
             };
 
             axios.get(tpsApiUrl, {
                     headers: tpsHeaders
                 })
                 .then(function(response) {
-                    console.log('TPS API response:', response.data);
-
                     const {
                         tps_data
                     } = response.data.data;
 
-                    if (tps_data.dpt_photo) {
-                        const previewImage = document.getElementById('previewImage1');
-                        previewImage.src = tps_data.dpt_photo;
-                        previewImage.classList.remove('d-none');
-                        document.getElementById('uploadIcon1').classList.add('d-none');
-                        document.getElementById('uploadText1').classList.add('d-none');
-                    }
-
-                    if (tps_data.c6_photo) {
-                        const previewImage = document.getElementById('previewImage2');
-                        previewImage.src = tps_data.c6_photo;
-                        previewImage.classList.remove('d-none');
-                        document.getElementById('uploadIcon2').classList.add('d-none');
-                        document.getElementById('uploadText2').classList.add('d-none');
-                    }
-
-                    if (tps_data.c1_photo) {
-                        const previewImage = document.getElementById('previewImage3');
-                        previewImage.src = tps_data.c1_photo;
-                        previewImage.classList.remove('d-none');
-                        document.getElementById('uploadIcon3').classList.add('d-none');
-                        document.getElementById('uploadText3').classList.add('d-none');
-                    }
-
-                    if (tps_data.cplano_photo) {
-                        const previewImage = document.getElementById('previewImage4');
-                        previewImage.src = tps_data.cplano_photo;
-                        previewImage.classList.remove('d-none');
-                        document.getElementById('uploadIcon4').classList.add('d-none');
-                        document.getElementById('uploadText4').classList.add('d-none');
-                    }
+                    fields.forEach(field => {
+                        if (tps_data[field.name]) {
+                            const previewImage = document.getElementById(field.previewImageId);
+                            previewImage.src = tps_data[field.name];
+                            previewImage.classList.remove('d-none');
+                            document.getElementById(field.uploadIconId).classList.add('d-none');
+                            document.getElementById(field.uploadTextId).classList.add('d-none');
+                        }
+                    });
                 })
                 .catch(function(error) {
                     console.error('Error calling TPS API:', error);
                 });
 
-            const fieldNames = ['dpt_photo', 'c6_photo', 'c1_photo', 'cplano_photo'];
-
-            function openUploadModal(index) {
+            function openUploadModal(field) {
                 const modal = new bootstrap.Modal(document.getElementById('uploadModal'));
                 modal.show();
 
                 document.getElementById('uploadFromFolder').addEventListener('click', function() {
-                    document.getElementById(`customFile${index + 1}`).click();
+                    document.getElementById(field.customFileId).click();
                     document.getElementById('cameraPreview').classList.add('d-none');
                 });
 
                 document.getElementById('uploadFromCamera').addEventListener('click', function() {
                     const cameraPreview = document.getElementById('cameraPreview');
-                    const fileInput = document.getElementById(`customFile${index + 1}`);
-                    fileInput.classList.add('d-none'); // Hide the file input
-                    cameraPreview.classList.remove('d-none'); // Show the camera preview
+                    const fileInput = document.getElementById(field.customFileId);
+                    fileInput.classList.add('d-none');
+                    cameraPreview.classList.remove('d-none');
 
-                    // Access camera
                     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         navigator.mediaDevices.getUserMedia({
                                 video: true
@@ -542,28 +515,77 @@
                 });
             }
 
-            ['uploadArea1', 'uploadArea2', 'uploadArea3', 'uploadArea4'].forEach((areaId, index) => {
-                document.getElementById(areaId).addEventListener('click', function() {
-                    openUploadModal(index);
+            fields.forEach((field, index) => {
+                document.getElementById(field.uploadAreaId).addEventListener('click', function() {
+                    openUploadModal(field);
+                });
+
+                document.getElementById(field.customFileId).addEventListener('change', function(e) {
+                    handleFileInputChange(e, field);
+                });
+
+                document.getElementById(field.previewButtonId).addEventListener('click', function() {
+                    handleImagePreview(field.previewImageId);
                 });
             });
 
-            ['customFile1', 'customFile2', 'customFile3', 'customFile4'].forEach((fileId, index) => {
-                document.getElementById(fileId).addEventListener('change', function(e) {
-                    handleFileInputChange(e, `previewImage${index + 1}`, `uploadIcon${index + 1}`,
-                        `uploadText${index + 1}`, `previewButton${index + 1}`, fieldNames[index]
-                    );
+            const modalElement = document.getElementById('uploadModal');
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let selectedPhotoId = null;
+            let cameraStream = null;
+
+            document.querySelectorAll('[data-bs-target="#uploadModal"]').forEach(function(uploadArea) {
+                uploadArea.addEventListener('click', function() {
+                    selectedPhotoId = this.getAttribute('data-photo-id');
                 });
             });
 
-            ['previewButton1', 'previewButton2', 'previewButton3', 'previewButton4'].forEach((buttonId, index) => {
-                document.getElementById(buttonId).addEventListener('click', function() {
-                    handleImagePreview(`previewImage${index + 1}`);
+            document.getElementById('takePhoto').addEventListener('click', function() {
+                const video = document.getElementById('cameraPreview');
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                canvas.toBlob(function(blob) {
+                    const file = new File([blob], `photo_${selectedPhotoId}.jpg`, {
+                        type: 'image/jpeg'
+                    });
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById(`previewImage${selectedPhotoId}`).src = e.target
+                            .result;
+                        document.getElementById(`previewImage${selectedPhotoId}`).classList
+                            .remove('d-none');
+                        document.getElementById(`uploadIcon${selectedPhotoId}`).classList.add(
+                            'd-none');
+                        document.getElementById(`uploadText${selectedPhotoId}`).classList.add(
+                            'd-none');
+                        document.getElementById(`previewButton${selectedPhotoId}`).classList
+                            .remove('d-none');
+                    };
+                    reader.readAsDataURL(file);
+
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    document.getElementById(`customFile${selectedPhotoId}`).files = dataTransfer
+                        .files;
+
+                    if (cameraStream) {
+                        cameraStream.getTracks().forEach(track => track.stop());
+                    }
+                    document.getElementById('cameraSection').classList.add('d-none');
                 });
             });
         });
     </script>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
