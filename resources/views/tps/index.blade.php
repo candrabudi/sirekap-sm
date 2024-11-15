@@ -84,21 +84,14 @@
                 .then(function(response) {
                     if (response.data.status === "success") {
                         const encryptedResponseBase64 = response.data.data;
-
-                        // Simpan data terenkripsi ke localStorage
-                        localStorage.setItem('encryptedProfileData', encryptedResponseBase64);
-
-                        // Dekripsi data
+                        localStorage.setItem('encryptedProfileData', encryptedResponseBase64)
                         const decryptedDataString = decryptData(userId, username, encryptedResponseBase64);
                         if (decryptedDataString) {
                             try {
                                 const decryptedData = JSON.parse(
-                                    decryptedDataString); // Ubah string hasil dekripsi menjadi JSON
+                                    decryptedDataString);
                                 console.log('Decrypted user profile data:', decryptedData);
-
-                                // Cek apakah role_id adalah 4 (Alpha)
                                 if (decryptedData.role_id === 4) {
-                                    // Tampilkan menu TPS
                                     document.getElementById('alphaMenu').style.display = 'block';
                                 }
                             } catch (error) {

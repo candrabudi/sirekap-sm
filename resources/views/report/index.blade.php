@@ -80,6 +80,8 @@
                                         <button type="button" class="btn btn-secondary w-100 mt-3"
                                             id="uploadFromCamera">Gunakan
                                             Kamera</button>
+
+                                        <!-- Preview Kamera -->
                                         <div class="mt-3 d-none" id="cameraSection">
                                             <video id="cameraPreview"
                                                 style="max-width: 100%; height: auto; border-radius: 8px;" autoplay></video>
@@ -203,20 +205,23 @@
                 'Authorization': `Bearer ${token}`
             };
 
-            axios.get(apiUrl, {
-                    headers: headers
-                })
+            axios.get(apiUrl, { headers: headers })
                 .then(function(response) {
                     if (response.data.status === "success") {
                         const encryptedResponseBase64 = response.data.data;
-
                         localStorage.setItem('encryptedProfileData', encryptedResponseBase64);
-
                         const decryptedData = decryptData(userId, username, encryptedResponseBase64);
-
                         if (decryptedData) {
-                            callTpsApi(token);
-                            console.log('Decrypted user profile data:', decryptedData);
+                            try {
+                                callTpsApi(token);
+                                const decryptedJson = JSON.parse(decryptedData);
+                                if (decryptedJson.role_id === 4) {
+                                    document.getElementById('alphaMenu').style.display = 'block';
+                                }
+                            } catch (error) {
+                                alert('Failed to parse decrypted data.');
+                                console.error(error);
+                            }
                         } else {
                             alert('Failed to decrypt user profile data.');
                         }
@@ -226,7 +231,8 @@
                     }
                 })
                 .catch(function(error) {
-                    console.error(error);
+                    console.error('Error fetching profile:', error);
+                    alert('An error occurred while validating the token.');
                 });
         }
 
