@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <title>| {{ env('APP_NAME') }}</title>
+    <title> @yield('title') | {{ env('APP_NAME') }}</title>
 
     <link rel="icon" href="img/core-img/favicon.ico">
     <link rel="apple-touch-icon" href="img/icons/icon-96x96.png">

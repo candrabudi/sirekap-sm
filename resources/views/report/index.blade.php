@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Laporkan TPS')
 @section('content')
     @include('layouts.sidebar')
     <div class="page-content-wrapper py-3">

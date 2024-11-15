@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Berhasil melakukan laporan')
 @section('content')
     <div class="login-wrapper d-flex align-items-center justify-content-center"
         style="background: url({{ asset('img/particel.svg') }}); background-size: 140%;  background-position: 0px -100px; ">

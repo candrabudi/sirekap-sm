@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Login Laporan')
 @section('content')
     <div id="hero-block" class="hero-block-wrapper bg-primary">
         <div class="hero-block-styles">
