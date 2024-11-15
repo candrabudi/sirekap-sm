@@ -46,9 +46,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="image-upload-box" id="uploadArea{{ $photo['id'] }}"
-                                            style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;"
-                                            data-bs-toggle="modal" data-bs-target="#uploadModal"
-                                            data-photo-id="{{ $photo['id'] }}">
+                                            style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
                                             <img id="previewImage{{ $photo['id'] }}" class="d-none"
                                                 style="max-width: 100%; height: 78px; border-radius: 8px;" />
                                             <img id="uploadIcon{{ $photo['id'] }}" class="w-75"
@@ -57,40 +55,13 @@
                                                 style="font-size: 12px;">Upload Foto</span>
                                         </div>
                                         <input class="form-control d-none" name="{{ $photo['name'] }}"
-                                            id="customFile{{ $photo['id'] }}" type="file" accept="image/*">
+                                            id="customFile{{ $photo['id'] }}" type="file" accept="image/*"
+                                            capture="camera">
                                         <button type="button" class="btn btn-secondary mt-2 d-none"
                                             id="previewButton{{ $photo['id'] }}" type="button">Preview</button>
                                     </div>
                                 </div>
                             @endforeach
-                        </div>
-
-                        <div class="modal" tabindex="-1" id="uploadModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Pilih Metode Upload</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <button type="button" class="btn btn-primary w-100" id="uploadFromFolder">Upload
-                                            dari
-                                            Folder</button>
-                                        <button type="button" class="btn btn-secondary w-100 mt-3"
-                                            id="uploadFromCamera">Gunakan
-                                            Kamera</button>
-
-                                        <!-- Preview Kamera -->
-                                        <div class="mt-3 d-none" id="cameraSection">
-                                            <video id="cameraPreview"
-                                                style="max-width: 100%; height: auto; border-radius: 8px;" autoplay></video>
-                                            <button type="button" class="btn btn-danger w-100 mt-3" id="takePhoto">Ambil
-                                                Foto</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="row" id="paslon-container">
@@ -105,14 +76,20 @@
                         <div class="form-group mt-3">
                             <label class="form-label" for="calculatedResult">Juml. surat suara + Juml. surat suara x
                                 2,5%</label>
-                            <input class="form-control" id="calculatedResult" type="text"
-                                placeholder="Hasil perhitungan" readonly>
+                            <input class="form-control" id="calculatedResult" type="text" placeholder="Hasil perhitungan"
+                                readonly>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="tps">Surat suara rusak</label>
                             <input class="form-control" id="damagedBallots" type="text"
                                 placeholder="Total surat suara rusak">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="tps">Surat suara sah</label>
+                            <input class="form-control" id="validVotes" type="text"
+                                placeholder="Total surat suara tidak sah">
                         </div>
 
                         <div class="form-group">
@@ -205,7 +182,9 @@
                 'Authorization': `Bearer ${token}`
             };
 
-            axios.get(apiUrl, { headers: headers })
+            axios.get(apiUrl, {
+                    headers: headers
+                })
                 .then(function(response) {
                     if (response.data.status === "success") {
                         const encryptedResponseBase64 = response.data.data;
@@ -275,7 +254,8 @@
 
                     const {
                         tps,
-                        paslon
+                        paslon,
+                        tps_data
                     } = response.data.data;
 
                     if (tps.status === 1) {
@@ -287,11 +267,18 @@
 
                     const tpsID = document.getElementById('tpsID');
                     const tpsNumber = document.getElementById('tps');
+                    const totalVotesInput = document.getElementById('totalVotesInput');
+                    const damagedBallots = document.getElementById('damagedBallots');
+                    const invalidVotes = document.getElementById('invalidVotes');
                     const headingReport = document.getElementById('headingReport');
                     headingReport.innerHTML = "Laporkan Data <b>TPS " + tps.tps_number + "</b>";
                     if (tpsID || tpsNumber) {
                         tpsID.value = tps.id;
                         tpsNumber.value = "TPS " + tps.tps_number
+                        totalVotesInput.value = tps_data.total_ballots
+                        invalidVotes.value = tps_data.invalid_votes
+                        validVotes.value = tps_data.valid_votes
+                        damagedBallots.value = tps_data.damaged_ballots
                     } else {
                         console.warn('Input field for TPS ID not found.');
                     }
@@ -333,12 +320,13 @@
             const locationDetails = document.getElementById('locationDetails').value;
             const totalVotes = document.getElementById('totalVotesInput').value;
             const damagedBallots = document.getElementById('damagedBallots').value;
+            const validVotes = document.getElementById('validVotes').value;
             const invalidVotes = document.getElementById('invalidVotes').value;
 
             const paslon = [];
             const paslonInputs = document.querySelectorAll('[id^="paslon_"]');
             paslonInputs.forEach(function(input, index) {
-                const id = input.getAttribute('id').split('_')[1]; // Extract paslon index
+                const id = input.getAttribute('id').split('_')[1];
                 paslon.push({
                     id: id,
                     total_votes: input.value
@@ -350,7 +338,8 @@
             formData.append('detail_location', locationDetails);
             formData.append('total_ballots', totalVotes);
             formData.append('damaged_ballots', damagedBallots);
-            formData.append('valid_votes', invalidVotes);
+            formData.append('valid_votes', validVotes);
+            formData.append('invalid_votes', invalidVotes);
 
             paslon.forEach(function(item, index) {
                 formData.append(`paslon[${index}][id]`, parseInt(item.id) + 1);
@@ -388,7 +377,6 @@
             const apiUrl = `{{ env('API_URL') }}/v1/tps/by-user/store/${tpsID}`;
             const token = localStorage.getItem('token');
 
-            // Data related to input
             const fields = [{
                     name: 'dpt_photo',
                     previewImageId: 'previewImage1',
@@ -441,12 +429,9 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Upload successful:', data);
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadModal'));
-                        modal.hide();
                     })
                     .catch(error => console.error('Upload failed:', error));
             }
-
 
             function handleFileInputChange(event, field) {
                 const file = event.target.files[0];
@@ -463,6 +448,16 @@
                     uploadImage(file, field.name);
                 }
             }
+
+            fields.forEach((field, index) => {
+                document.getElementById(field.uploadAreaId).addEventListener('click', function() {
+                    document.getElementById(field.customFileId).click();
+                });
+
+                document.getElementById(field.customFileId).addEventListener('change', function(e) {
+                    handleFileInputChange(e, field);
+                });
+            });
 
             const tpsApiUrl = '{{ env('API_URL') }}/v1/tps/by-user';
             const tpsHeaders = {
@@ -490,106 +485,6 @@
                 .catch(function(error) {
                     console.error('Error calling TPS API:', error);
                 });
-
-            function openUploadModal(field) {
-                const modal = new bootstrap.Modal(document.getElementById('uploadModal'));
-                modal.show();
-
-                document.getElementById('uploadFromFolder').addEventListener('click', function() {
-                    document.getElementById(field.customFileId).click();
-                    document.getElementById('cameraPreview').classList.add('d-none');
-                });
-
-                document.getElementById('uploadFromCamera').addEventListener('click', function() {
-                    const cameraPreview = document.getElementById('cameraPreview');
-                    const fileInput = document.getElementById(field.customFileId);
-                    fileInput.classList.add('d-none');
-                    cameraPreview.classList.remove('d-none');
-
-                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                        navigator.mediaDevices.getUserMedia({
-                                video: true
-                            })
-                            .then(function(stream) {
-                                cameraPreview.srcObject = stream;
-                                cameraPreview.play();
-                            })
-                            .catch(function(error) {
-                                alert('Camera access failed: ' + error);
-                            });
-                    }
-                });
-            }
-
-            fields.forEach((field, index) => {
-                document.getElementById(field.uploadAreaId).addEventListener('click', function() {
-                    openUploadModal(field);
-                });
-
-                document.getElementById(field.customFileId).addEventListener('change', function(e) {
-                    handleFileInputChange(e, field);
-                });
-
-                document.getElementById(field.previewButtonId).addEventListener('click', function() {
-                    handleImagePreview(field.previewImageId);
-                });
-            });
-
-            const modalElement = document.getElementById('uploadModal');
-            modalElement.addEventListener('hidden.bs.modal', function() {
-                document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            let selectedPhotoId = null;
-            let cameraStream = null;
-
-            document.querySelectorAll('[data-bs-target="#uploadModal"]').forEach(function(uploadArea) {
-                uploadArea.addEventListener('click', function() {
-                    selectedPhotoId = this.getAttribute('data-photo-id');
-                });
-            });
-
-            document.getElementById('takePhoto').addEventListener('click', function() {
-                const video = document.getElementById('cameraPreview');
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const context = canvas.getContext('2d');
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                canvas.toBlob(function(blob) {
-                    const file = new File([blob], `photo_${selectedPhotoId}.jpg`, {
-                        type: 'image/jpeg'
-                    });
-
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById(`previewImage${selectedPhotoId}`).src = e.target
-                            .result;
-                        document.getElementById(`previewImage${selectedPhotoId}`).classList
-                            .remove('d-none');
-                        document.getElementById(`uploadIcon${selectedPhotoId}`).classList.add(
-                            'd-none');
-                        document.getElementById(`uploadText${selectedPhotoId}`).classList.add(
-                            'd-none');
-                        document.getElementById(`previewButton${selectedPhotoId}`).classList
-                            .remove('d-none');
-                    };
-                    reader.readAsDataURL(file);
-
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    document.getElementById(`customFile${selectedPhotoId}`).files = dataTransfer
-                        .files;
-
-                    if (cameraStream) {
-                        cameraStream.getTracks().forEach(track => track.stop());
-                    }
-                    document.getElementById('cameraSection').classList.add('d-none');
-                });
-            });
         });
     </script>
 

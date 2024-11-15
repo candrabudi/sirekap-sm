@@ -311,63 +311,44 @@
         }
 
         function updatePaslonCandidates(paslons) {
-            const candidateContainer = $('#candidate-container');
-            candidateContainer.empty();
+    const candidateContainer = $('#candidate-container');
+    candidateContainer.empty();
 
-            const highestVotesPaslon = paslons.reduce((prev, current) => (prev.total_votes > current.total_votes) ? prev : current);
+    // Remove duplicate paslons based on both mayor_name and deputy_mayor_name
+    const uniquePaslons = Array.from(new Set(paslons.map(paslon => `${paslon.mayor_name}-${paslon.deputy_mayor_name}`)))
+        .map(nameCombo => paslons.find(paslon => `${paslon.mayor_name}-${paslon.deputy_mayor_name}` === nameCombo));
 
-            const nonZeroVotesPaslons = paslons.filter(paslon => paslon.total_votes > 0 && paslon !== highestVotesPaslon);
-            const zeroVotesPaslons = paslons.filter(paslon => paslon.total_votes === 0);
+    // Cek apakah ada paslon dengan total_votes > 0
+    const hasNonZeroVotes = uniquePaslons.some(paslon => paslon.total_votes > 0);
 
-            if (highestVotesPaslon) {
-                const { mayor_name, deputy_mayor_name, total_votes } = highestVotesPaslon;
-                const votesText = `${total_votes.toLocaleString()}`;
-                const votesStyle = 'color: #FF4500; font-weight: bold; font-size: 14px;';
+    if (hasNonZeroVotes) {
+        // Urutkan berdasarkan total_votes jika ada yang terisi
+        uniquePaslons.sort((a, b) => b.total_votes - a.total_votes);
+    } else {
+        // Jika semua total_votes adalah 0, urutkan berdasarkan position
+        uniquePaslons.sort((a, b) => a.position - b.position);
+    }
 
-                const candidateMarkup = `
-                    <div class="candidate">
-                        <p style="font-size: 14px;">${mayor_name} dan ${deputy_mayor_name}</p>
-                        <span class="votes" style="${votesStyle}">
-                            <img src="https://img.icons8.com/emoji/48/000000/fire.png" style="width: 20px;" />
-                            ${votesText}
-                        </span>
-                    </div>
-                `;
-                candidateContainer.append(candidateMarkup);
-            }
+    // Render each paslon
+    uniquePaslons.forEach(paslon => {
+        const { mayor_name, deputy_mayor_name, total_votes, position } = paslon;
+        const votesText = total_votes > 0 ? `${total_votes.toLocaleString()}` : '0';
+        const votesStyle = total_votes > 0 ? 'color: #FF4500; font-weight: bold; font-size: 14px;' : 'color: #FF5C5C;';
+        
+        const candidateMarkup = `
+            <div class="candidate">
+                <span class="name" style="font-size: 12px;">${mayor_name} dan ${deputy_mayor_name}</span>
+                <span class="votes" style="${votesStyle}">
+                    <span style="font-weight: bold;">${votesText}</span>
+                </span>
+            </div>
+        `;
+        candidateContainer.append(candidateMarkup);
+    });
+}
 
-            nonZeroVotesPaslons.forEach(paslon => {
-                const { mayor_name, deputy_mayor_name, total_votes } = paslon;
-                const votesText = `${total_votes.toLocaleString()}`;
-                const votesStyle = 'color: #FF4500; font-weight: bold; font-size: 14px;';
 
-                const candidateMarkup = `
-                    <div class="candidate">
-                        <p style="font-size: 14px;">${mayor_name} dan ${deputy_mayor_name}</p>
-                        <span class="votes" style="${votesStyle}">
-                            <span style="font-weight: bold;">${votesText}</span>
-                        </span>
-                    </div>
-                `;
-                candidateContainer.append(candidateMarkup);
-            });
 
-            zeroVotesPaslons.forEach(paslon => {
-                const { mayor_name, deputy_mayor_name, total_votes } = paslon;
-                const votesText = '0';
-                const votesStyle = 'color: #FF5C5C;';
-
-                const candidateMarkup = `
-                    <div class="candidate">
-                        <span class="name" style="font-size: 12px;">${mayor_name} dan ${deputy_mayor_name}</span>
-                        <span class="votes" style="${votesStyle}">
-                            <span style="font-weight: bold;">${votesText}</span>
-                        </span>
-                    </div>
-                `;
-                candidateContainer.append(candidateMarkup);
-            });
-        }
 
         function updateTpsInfo(tps) {
             const tpsNumber = tps?.tps_number || 'N/A';
