@@ -36,7 +36,8 @@
                         </div>
 
                         <div class="form-group position-relative">
-                            <input class="form-control" id="psw-input" type="password" placeholder="Enter Password" required>
+                            <input class="form-control" id="psw-input" type="password" placeholder="Enter Password"
+                                required>
                             <div class="position-absolute" id="password-visibility">
                                 <i class="bi bi-eye"></i>
                                 <i class="bi bi-eye-slash"></i>
@@ -56,23 +57,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
+            if (localStorage.getItem('token')) {
+                window.location.href = '/home';
+            }
+
             $('#mulai-sekarang-btn').on('click', function() {
-                // Hide the hero block
                 $('#hero-block').hide();
-                // Show the login form
                 $('#login-wrapper').show();
             });
 
-            // Handle login form submission
             $('#login-form').on('submit', function(e) {
-                e.preventDefault(); // Prevent default form submission
-
-                // Get form data
+                e.preventDefault();
                 const username = $('#username').val();
                 const password = $('#psw-input').val();
-                const userDevice = "g7_3s9fk0GRqxdab"; // Your device ID
+                const userDevice = "g7_3s9fk0GRqxdab";
                 const fcmToken = "eZQ2Uf7hQeWam9inWFCAw_:APA91bGif9MwpT51EpLixXjZF4yC8alHqQ0fyDFiBdrVXO0adDwfBEGWk771aW34rSYAkLrGHIVfJiwXwKvd0wztz8jagvgWWFkNKsaXd8cPcIOI_2zsXN340POsb17h3zuFdvSNRumD";
 
                 axios.post('{{ env('API_URL') }}/v1/login', {
@@ -82,10 +85,6 @@
                     fcm_token: fcmToken
                 })
                 .then(function(response) {
-                    // Handle success
-                    console.log(response.data);
-
-                    // Save the login data to localStorage
                     if (response.data.status === "success") {
                         localStorage.setItem('user_id', response.data.data.user_id);
                         localStorage.setItem('username', response.data.data.username);
@@ -93,16 +92,23 @@
                         localStorage.setItem('expires_at', response.data.data.expires_at);
                         localStorage.setItem('is_officer', response.data.data.is_officer);
 
-                        // Redirect to home after successful login
-                        window.location.href = '/home'; // Redirect to home
+                        window.location.href = '/home';
                     } else {
-                        alert("Login failed: " + response.data.message);
+                        console.log(Swal); // Check if Swal is available
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal melakukan login',
+                            text: response.data.message
+                        });
                     }
                 })
                 .catch(function(error) {
-                    // Handle error
                     console.error(error);
-                    alert("Login failed, please try again.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: 'Username atau password salah.'
+                    });
                 });
             });
         });

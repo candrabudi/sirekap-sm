@@ -653,13 +653,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (offlineBtn) {
             offlineBtn.addEventListener('click', function () {
-                showAlert('Oops! No internet connection.', '#ea4c62');
+                showAlert('Ups! Tidak ada koneksi internet.', '#ea4c62');
             });
         }
 
         if (onlineBtn) {
             onlineBtn.addEventListener('click', function () {
-                showAlert('Your internet connection is back.', '#00b894');
+                showAlert('Koneksi internet Anda kembali.', '#00b894');
             });
         }
     }

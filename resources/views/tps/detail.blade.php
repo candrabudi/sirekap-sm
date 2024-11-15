@@ -183,6 +183,59 @@
                 alert('No valid authentication token found. Please log in.');
                 window.location.href = '/login';
             }
+
+            if (!navigator.geolocation) {
+                alert("Lokasi tidak tersedia di perangkat ini. Silakan aktifkan lokasi.");
+                $(".homepage").hide();
+                const offlineMessage = `
+        <div class="container">
+            <div class="card text-center px-3">
+                <div class="card-body">
+                    <i class="bi display-1 bi-wifi-off text-danger mb-2"></i>
+                    <h5>Tidak ada koneksi internet!</h5>
+                    <p class="mb-0">Sepertinya Anda sedang offline, silakan periksa koneksi internet Anda. Halaman ini tidak mendukung saat Anda offline!</p>
+                </div>
+            </div>
+        </div>
+    `;
+                $(".page-content-wrapper").html(offlineMessage);
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log('Lokasi pengguna: ', position.coords.latitude, position.coords.longitude);
+            }, function(error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    $(".homepage").hide();
+
+                    const permissionMessage = `
+            <div class="container">
+                <div class="card text-center px-3">
+                    <div class="card-body">
+                        <i class="bi display-1 bi-geo-alt text-danger mb-2"></i>
+                        <h5>Permission Ditolak</h5>
+                        <p class="mb-0">Anda perlu mengaktifkan izin lokasi untuk melanjutkan menggunakan halaman ini.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+                    $(".page-content-wrapper").html(permissionMessage);
+                    $("#enable-location").on('click', function() {
+                        alert(
+                            "Kami akan meminta izin lokasi Anda sekarang. Silakan izinkan untuk melanjutkan."
+                            );
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            console.log('Lokasi pengguna: ', position.coords.latitude,
+                                position.coords.longitude);
+                            location.reload();
+                        }, function(error) {
+                            alert("Gagal mendapatkan lokasi. Silakan coba lagi.");
+                        });
+                    });
+                } else {
+                    alert("Gagal mendapatkan lokasi. Silakan coba lagi.");
+                }
+            });
         });
 
         function validateToken(token, userId, username) {

@@ -3,123 +3,125 @@
 @section('content')
     @include('layouts.sidebar')
     <div class="page-content-wrapper py-3">
-        <div class="container">
-            <div class="card user-info-card mb-3">
-                <div class="card-body d-flex align-items-center">
-                    <div class="user-info">
-                        <div class="d-flex align-items-center">
-                            <h5 class="mb-1" id="tpsName">TPS #0001</h5>
+        <div class="homepage">
+            <div class="container">
+                <div class="card user-info-card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="user-info">
+                            <div class="d-flex align-items-center">
+                                <h5 class="mb-1" id="tpsName">TPS #0001</h5>
+                            </div>
+                            <p class="mb-0" id="addressTps">KEBON PEDES, TANAH SAREAL, BOGOR</p>
                         </div>
-                        <p class="mb-0" id="addressTps">KEBON PEDES, TANAH SAREAL, BOGOR</p>
+                    </div>
+                </div>
+
+                <div id="alert-container"></div>
+            </div>
+            <div class="container mb-3">
+                <div class="card comparison-table-two">
+                    <div class="card-body">
+                        <table class="table mb-0" id="data_walkot">
+                            <thead>
+                                <tr>
+                                    <th>Calon Walikota</th>
+                                    <th width="120">Total Pemilih</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <div id="alert-container"></div>
-        </div>
-        <div class="container mb-3">
-            <div class="card comparison-table-two">
-                <div class="card-body">
-                    <table class="table mb-0" id="data_walkot">
-                        <thead>
-                            <tr>
-                                <th>Calon Walikota</th>
-                                <th width="120">Total Pemilih</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-
-                        </tbody>
-                    </table>
+            <div class="container mb-3">
+                <div class="card comparison-table-two">
+                    <div class="card-body">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Surat Suara</th>
+                                    <th width="120">
+                                        Total Data
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Total Surat Suara</th>
+                                    <td id="total_ballots"></td>
+                                </tr>
+                                <tr>
+                                    <th>Total Data Sah</th>
+                                    <td id="valid_votes"></td>
+                                </tr>
+                                <tr>
+                                    <th>Total Data Tidak Sah</th>
+                                    <td id="damaged_ballots"></td>
+                                </tr>
+                                <tr>
+                                    <th>Total Surat Rusak</th>
+                                    <td id="invalid_ballots"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="container mb-3">
-            <div class="card comparison-table-two">
-                <div class="card-body">
-                    <table class="table mb-0">
-                        <thead>
-                            <tr>
-                                <th>Surat Suara</th>
-                                <th width="120">
-                                    Total Data
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>Total Surat Suara</th>
-                                <td id="total_ballots"></td>
-                            </tr>
-                            <tr>
-                                <th>Total Data Sah</th>
-                                <td id="valid_votes"></td>
-                            </tr>
-                            <tr>
-                                <th>Total Data Tidak Sah</th>
-                                <td id="damaged_ballots"></td>
-                            </tr>
-                            <tr>
-                                <th>Total Surat Rusak</th>
-                                <td id="invalid_ballots"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="element-heading mt-3">
-                                <h6>DATA DPT</h6>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="single-gallery-item">
-                                        <img id="dpt-photo" src="" alt="Data DPT" class="clickable-image">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="element-heading mt-3">
+                                    <h6>DATA DPT</h6>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="single-gallery-item">
+                                            <img id="dpt-photo" src="" alt="Data DPT" class="clickable-image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-6">
-                            <div class="element-heading mt-3">
-                                <h6>DATA C6</h6>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="single-gallery-item">
-                                        <img id="c6-photo" src="" alt="Data C6" class="clickable-image">
+                            <div class="col-6">
+                                <div class="element-heading mt-3">
+                                    <h6>DATA C6</h6>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="single-gallery-item">
+                                            <img id="c6-photo" src="" alt="Data C6" class="clickable-image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-6 mt-3">
-                            <div class="element-heading mt-3">
-                                <h6>DATA C1</h6>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="single-gallery-item">
-                                        <img id="c1-photo" src="" alt="Data C1" class="clickable-image">
+                            <div class="col-6 mt-3">
+                                <div class="element-heading mt-3">
+                                    <h6>DATA C1</h6>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="single-gallery-item">
+                                            <img id="c1-photo" src="" alt="Data C1" class="clickable-image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-6 mt-3">
-                            <div class="element-heading mt-3">
-                                <h6>DATA CPLANO</h6>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="single-gallery-item">
-                                        <img id="cplano-photo" src="" alt="Data CPLANO" class="clickable-image">
+                            <div class="col-6 mt-3">
+                                <div class="element-heading mt-3">
+                                    <h6>DATA CPLANO</h6>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="single-gallery-item">
+                                            <img id="cplano-photo" src="" alt="Data CPLANO" class="clickable-image">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -127,42 +129,42 @@
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img id="modal-image" src="" alt="Selected Image" class="img-fluid">
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <img id="modal-image" src="" alt="Selected Image" class="img-fluid">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <style>
-            .single-gallery-item img {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                border: 2px solid #333;
-                border-radius: 8px;
-                cursor: pointer;
-            }
-        </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // When any image is clicked
-                $('.clickable-image').on('click', function() {
-                    var imgSrc = $(this).attr('src');
-                    $('#modal-image').attr('src', imgSrc);
-                    $('#imageModal').modal('show');
+            <style>
+                .single-gallery-item img {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: cover;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    border: 2px solid #333;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+            </style>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    // When any image is clicked
+                    $('.clickable-image').on('click', function() {
+                        var imgSrc = $(this).attr('src');
+                        $('#modal-image').attr('src', imgSrc);
+                        $('#imageModal').modal('show');
+                    });
                 });
-            });
-        </script>
+            </script>
+        </div>
 
     </div>
     @include('layouts.menu')
@@ -174,7 +176,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
     <script>
         $(document).ready(function() {
             const token = localStorage.getItem('token');
@@ -184,10 +185,66 @@
             if (token && userId && username) {
                 validateToken(token, userId, username);
             } else {
-                alert('No valid authentication token found. Please log in.');
+                alert('Token otentikasi tidak valid. Silakan masuk.');
                 window.location.href = '/login';
             }
+
+            if (!navigator.geolocation) {
+                alert("Lokasi tidak tersedia di perangkat ini. Silakan aktifkan lokasi.");
+                $(".homepage").hide();
+                const offlineMessage = `
+        <div class="container">
+            <div class="card text-center px-3">
+                <div class="card-body">
+                    <i class="bi display-1 bi-wifi-off text-danger mb-2"></i>
+                    <h5>Tidak ada koneksi internet!</h5>
+                    <p class="mb-0">Sepertinya Anda sedang offline, silakan periksa koneksi internet Anda. Halaman ini tidak mendukung saat Anda offline!</p>
+                </div>
+            </div>
+        </div>
+    `;
+                $(".page-content-wrapper").html(offlineMessage);
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log('Lokasi pengguna: ', position.coords.latitude, position.coords.longitude);
+            }, function(error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    $(".homepage").hide();
+
+                    const permissionMessage = `
+            <div class="container">
+                <div class="card text-center px-3">
+                    <div class="card-body">
+                        <i class="bi display-1 bi-geo-alt text-danger mb-2"></i>
+                        <h5>Permission Ditolak</h5>
+                        <p class="mb-0">Anda perlu mengaktifkan izin lokasi untuk melanjutkan menggunakan halaman ini.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+                    $(".page-content-wrapper").html(permissionMessage);
+                    $("#enable-location").on('click', function() {
+                        alert(
+                            "Kami akan meminta izin lokasi Anda sekarang. Silakan izinkan untuk melanjutkan."
+                            );
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            console.log('Lokasi pengguna: ', position.coords.latitude,
+                                position.coords.longitude);
+                            location.reload();
+                        }, function(error) {
+                            alert("Gagal mendapatkan lokasi. Silakan coba lagi.");
+                        });
+                    });
+                } else {
+                    alert("Gagal mendapatkan lokasi. Silakan coba lagi.");
+                }
+            });
         });
+
+
+
 
         function validateToken(token, userId, username) {
             const apiUrl = '{{ env('API_URL') }}/v2/user/get-profile';
@@ -212,7 +269,7 @@
                         if (decryptedDataString) {
                             try {
                                 const decryptedData = JSON.parse(
-                                decryptedDataString); // Ubah string hasil dekripsi menjadi JSON
+                                    decryptedDataString); // Ubah string hasil dekripsi menjadi JSON
                                 console.log('Decrypted user profile data:', decryptedData);
 
                                 // Cek apakah role_id adalah 4 (Alpha)
@@ -313,7 +370,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    alert('Failed to load data. Please try again.');
+                    // alert('Failed to load data. Please try again.');
                 });
 
             function updatePageContent(tpsData) {
@@ -366,6 +423,5 @@
         `;
             }
         }
-
     </script>
 @endsection
