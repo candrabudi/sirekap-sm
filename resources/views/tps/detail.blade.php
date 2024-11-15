@@ -186,7 +186,7 @@
         });
 
         function validateToken(token, userId, username) {
-            const apiUrl = 'https://api.nxwtomoka.site/api/v2/user/get-profile';
+            const apiUrl = '{{ env('API_URL') }}/v2/user/get-profile';
             const headers = {
                 'api_key': 'EhJ4FDZr2jn9zlBtC3zxWaWAzKoIJiL6',
                 'user_id': userId,
@@ -254,7 +254,7 @@
     <script>
         $(document).ready(function() {
             const token = localStorage.getItem('token');
-            const apiUrl = `https://api.nxwtomoka.site/api/v1/tps/detail/coordinator/${{!! json_encode($a) !!}}`;
+            const apiUrl = `{{ env('API_URL') }}/v1/tps/detail/coordinator/${{!! json_encode($a) !!}}`;
     
             fetchTpsDetails(apiUrl, token);
         });

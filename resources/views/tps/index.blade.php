@@ -71,7 +71,7 @@
         });
 
         function validateToken(token, userId, username) {
-            const apiUrl = 'https://api.nxwtomoka.site/api/v2/user/get-profile';
+            const apiUrl = '{{ env('API_URL') }}/v2/user/get-profile';
             const headers = {
                 'api_key': 'EhJ4FDZr2jn9zlBtC3zxWaWAzKoIJiL6',
                 'user_id': userId,
@@ -141,9 +141,9 @@
         $(document).ready(function() {
             const token = localStorage.getItem('token');
             const districtID = localStorage.getItem('district_id');
-            const apiUrl = 'https://api.nxwtomoka.site/api/v1/tps/coordinator/list';
+            const apiUrl = '{{ env('API_URL') }}/v1/tps/coordinator/list';
             const villageApiUrl =
-            `https://api.nxwtomoka.site/api/v1/tps/villages?district_id=${districtID}`; // API endpoint to get villages
+            `{{ env('API_URL') }}/v1/tps/villages?district_id=${districtID}`; // API endpoint to get villages
 
             // Fetch village data
             fetch(villageApiUrl, {

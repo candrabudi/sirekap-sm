@@ -198,7 +198,7 @@
         });
 
         function validateToken(token, userId, username) {
-            const apiUrl = 'https://api.nxwtomoka.site/api/v2/user/get-profile';
+            const apiUrl = '{{ env('API_URL') }}/v2/user/get-profile';
             const headers = {
                 'api_key': 'EhJ4FDZr2jn9zlBtC3zxWaWAzKoIJiL6',
                 'user_id': userId,
@@ -262,7 +262,7 @@
         }
 
         function callTpsApi(token) {
-            const tpsApiUrl = 'https://api.nxwtomoka.site/api/v1/tps/by-user';
+            const tpsApiUrl = '{{ env('API_URL') }}/v1/tps/by-user';
             const tpsHeaders = {
                 'Authorization': `Bearer ${token}`
             };
@@ -360,7 +360,7 @@
 
             const token = localStorage.getItem('token');
 
-            axios.post(`https://api.nxwtomoka.site/api/v1/tps/by-user/store/${tpsID}`, formData, {
+            axios.post(`{{ env('API_URL') }}/v1/tps/by-user/store/${tpsID}`, formData, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'
@@ -385,7 +385,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const tpsData = JSON.parse(localStorage.getItem('tpsData'));
             const tpsID = tpsData.tps.id;
-            const apiUrl = `https://api.nxwtomoka.site/api/v1/tps/by-user/store/${tpsID}`;
+            const apiUrl = `{{ env('API_URL') }}/v1/tps/by-user/store/${tpsID}`;
             const token = localStorage.getItem('token');
 
             // Data related to input
@@ -464,7 +464,7 @@
                 }
             }
 
-            const tpsApiUrl = 'https://api.nxwtomoka.site/api/v1/tps/by-user';
+            const tpsApiUrl = '{{ env('API_URL') }}/v1/tps/by-user';
             const tpsHeaders = {
                 'Authorization': `Bearer ${token}`
             };

@@ -75,7 +75,7 @@
                 const userDevice = "g7_3s9fk0GRqxdab"; // Your device ID
                 const fcmToken = "eZQ2Uf7hQeWam9inWFCAw_:APA91bGif9MwpT51EpLixXjZF4yC8alHqQ0fyDFiBdrVXO0adDwfBEGWk771aW34rSYAkLrGHIVfJiwXwKvd0wztz8jagvgWWFkNKsaXd8cPcIOI_2zsXN340POsb17h3zuFdvSNRumD";
 
-                axios.post('https://api.nxwtomoka.site/api/v1/login', {
+                axios.post('{{ env('API_URL') }}/v1/login', {
                     username: username,
                     password: password,
                     user_device: userDevice,

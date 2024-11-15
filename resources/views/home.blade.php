@@ -190,7 +190,7 @@
         });
 
         function validateToken(token, userId, username) {
-            const apiUrl = 'https://api.nxwtomoka.site/api/v2/user/get-profile';
+            const apiUrl = '{{ env('API_URL') }}/v2/user/get-profile';
             const headers = {
                 'api_key': 'EhJ4FDZr2jn9zlBtC3zxWaWAzKoIJiL6',
                 'user_id': userId,
@@ -266,7 +266,7 @@
     <script>
         $(document).ready(function() {
             const token = localStorage.getItem('token');
-            const apiUrl = 'https://api.nxwtomoka.site/api/v1/tps/by-user';
+            const apiUrl = '{{ env('API_URL') }}/v1/tps/by-user';
             const defaultImage =
                 'https://cdn-icons-png.flaticon.com/512/6598/6598519.png'; // Ganti dengan URL gambar default kamu
 
