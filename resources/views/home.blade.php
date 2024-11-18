@@ -143,8 +143,7 @@
 
             <style>
                 .single-gallery-item img {
-                    width: 100%;
-                    height: 200px;
+                    max-height: 200px;
                     object-fit: cover;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
                     border: 2px solid #333;
@@ -325,7 +324,7 @@
             const token = localStorage.getItem('token');
             const apiUrl = '{{ env('API_URL') }}/v1/tps/by-user';
             const defaultImage =
-                'https://cdn-icons-png.flaticon.com/512/6598/6598519.png'; // Ganti dengan URL gambar default kamu
+                'https://cdn-icons-png.flaticon.com/512/15639/15639068.png'; // Ganti dengan URL gambar default kamu
 
             fetch(apiUrl, {
                     method: 'GET',
