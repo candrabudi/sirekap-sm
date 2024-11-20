@@ -4,8 +4,6 @@
     @include('layouts.sidebar')
     <div class="page-content-wrapper py-3">
         <div class="container">
-            <div class="card product-details-card mb-3" style="background: none;">
-                <div class="card-body">
                     <div id="tps-info"></div>
 
                     <style>
@@ -51,7 +49,7 @@
                     </div>
 
 
-                    <div class="card product-details-card mb-3" style="border: 1px solid #E1E7EF; border-radius: 12px;" id="tps-container">
+                    <div id="tps-container">
                     </div>
 
                     <div class="card">
@@ -156,10 +154,6 @@
                         }
                     </style>
                 </div>
-
-
-            </div>
-        </div>
     </div>
 
     @include('layouts.menu')

@@ -69,32 +69,32 @@
 
                         <div class="form-group mt-3">
                             <label class="form-label" for="totalVotesInput">Input Juml. surat suara</label>
-                            <input class="form-control" id="totalVotesInput" type="text" placeholder="Input jumlah suara"
+                            <input class="form-control" id="totalVotesInput" type="number" placeholder="Input jumlah suara"
                                 oninput="calculateTotal()">
                         </div>
 
                         <div class="form-group mt-3">
                             <label class="form-label" for="calculatedResult">Juml. surat suara + Juml. surat suara x
                                 2,5%</label>
-                            <input class="form-control" id="calculatedResult" type="text" placeholder="Hasil perhitungan"
+                            <input class="form-control" id="calculatedResult" type="number" placeholder="Hasil perhitungan"
                                 readonly>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="tps">Surat suara rusak</label>
-                            <input class="form-control" id="damagedBallots" type="text"
+                            <input class="form-control" id="damagedBallots" type="number"
                                 placeholder="Total surat suara rusak">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="tps">Surat suara sah</label>
-                            <input class="form-control" id="validVotes" type="text"
+                            <input class="form-control" id="validVotes" type="number"
                                 placeholder="Total surat suara tidak sah">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="tps">Surat suara tidak sah</label>
-                            <input class="form-control" id="invalidVotes" type="text"
+                            <input class="form-control" id="invalidVotes" type="number"
                                 placeholder="Total surat suara tidak sah">
                         </div>
 
@@ -350,7 +350,7 @@
                             <label class="form-label" for="paslon_${index}">${paslon.nama_wali_kota}</label>
                         </div>
                         <div class="form-group">
-                            <input class="form-control" id="paslon_${index}" type="text"
+                            <input class="form-control" id="paslon_${index}" type="number"
                                 placeholder="Masukan suara untuk ${paslon.nama_wali_kota}" value="${paslon.total_votes}">
                         </div>
                     `;
