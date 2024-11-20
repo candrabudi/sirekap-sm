@@ -355,7 +355,7 @@
                 updateTpsInfo(tps);
                 updateTpsDetails(tps, tpsUsers);
                 handleSaksiCarousel(tpsUsers);
-                updateAdditionalTpsInfo(tps);
+                updateAdditionalTpsInfo(tpsData, tps);
             })
             .catch(error => {
                 console.error('Error fetching the API:', error);
@@ -479,13 +479,13 @@
             }
         }
 
-        function updateAdditionalTpsInfo(tps) {
-            const coordinates = `${tps?.latitude || 'N/A'}, ${tps?.longitude || 'N/A'}`;
-            const detailedLocation = tps?.address || 'N/A';
-            const totalVotes = tps?.total_votes || 'N/A';
-            const damagedVotes = tps?.damaged_votes || 'N/A';
-            const validVotes = tps?.valid_votes || 'N/A';
-            const invalidVotes = tps?.invalid_votes || 'N/A';
+        function updateAdditionalTpsInfo(tpsData, tps) {
+            const coordinates = `${tpsData?.coordinate_location || 'N/A'}`;
+            const detailedLocation = tpsData?.detail_location || 'N/A';
+            const totalVotes = tpsData?.total_ballots || 'N/A';
+            const damagedVotes = tpsData?.damaged_ballots || 'N/A';
+            const validVotes = tpsData?.valid_votes || 'N/A';
+            const invalidVotes = tpsData?.invalid_votes || 'N/A';
     
             const tpsCard = `
                 <div class="card product-details-card mb-3" style="border: 1px solid #E1E7EF; border-radius: 12px;">
