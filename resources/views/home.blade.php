@@ -130,6 +130,18 @@
                 </div>
             </div>
 
+            <style>
+                /* CSS untuk menyesuaikan ukuran gambar */
+                .clickable-image {
+                    width: 100%;
+                    /* Membuat gambar mengisi lebar kolom */
+                    height: 150px;
+                    /* Menentukan tinggi gambar yang sama untuk semua gambar */
+                    object-fit: cover;
+                    /* Menjaga rasio aspek gambar agar tidak terdistorsi, memotong jika perlu */
+                }
+            </style>
+
 
             <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -227,7 +239,7 @@
                     $("#enable-location").on('click', function() {
                         alert(
                             "Kami akan meminta izin lokasi Anda sekarang. Silakan izinkan untuk melanjutkan."
-                            );
+                        );
                         navigator.geolocation.getCurrentPosition(function(position) {
                             console.log('Lokasi pengguna: ', position.coords.latitude,
                                 position.coords.longitude);

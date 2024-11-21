@@ -43,7 +43,7 @@
                             ];
                         @endphp
 
-                        <div class="row">
+                        <div class="row mb-4">
                             @foreach ($photos as $photo)
                                 <div class="col-6 mt-3">
                                     <div class="element-heading mb-3">
@@ -71,39 +71,53 @@
                             @endforeach
                         </div>
 
+                        <h4 class="mb-2">Voting Paslon</h4>
                         <div class="row" id="paslon-container">
                         </div>
 
                         <div class="form-group mt-3">
                             <label class="form-label" for="totalVotesInput">Input Juml. surat suara</label>
                             <input class="form-control" id="totalVotesInput" type="number" placeholder="Input jumlah suara"
-                                oninput="calculateTotal()">
+                                oninput="calculateTotal()" onkeydown="preventInvalidInput(event)" oninput="removeInvalidCharacters(this)">
                         </div>
-
+                        
                         <div class="form-group mt-3">
-                            <label class="form-label" for="calculatedResult">Juml. surat suara + Juml. surat suara x
-                                2,5%</label>
-                            <input class="form-control" id="calculatedResult" type="number" placeholder="Hasil perhitungan"
-                                readonly>
+                            <label class="form-label" for="calculatedResult">Juml. surat suara + Juml. surat suara x 2,5%</label>
+                            <input class="form-control" id="calculatedResult" type="number" placeholder="Hasil perhitungan" readonly>
                         </div>
-
+                        
                         <div class="form-group">
-                            <label class="form-label" for="tps">Surat suara rusak</label>
-                            <input class="form-control" id="damagedBallots" type="number"
-                                placeholder="Total surat suara rusak">
+                            <label class="form-label" for="damagedBallots">Surat suara rusak</label>
+                            <input class="form-control" id="damagedBallots" type="number" placeholder="Total surat suara rusak"
+                                onkeydown="preventInvalidInput(event)" oninput="removeInvalidCharacters(this)">
                         </div>
-
+                        
                         <div class="form-group">
-                            <label class="form-label" for="tps">Surat suara sah</label>
-                            <input class="form-control" id="validVotes" type="number"
-                                placeholder="Total surat suara tidak sah">
+                            <label class="form-label" for="validVotes">Surat suara sah</label>
+                            <input class="form-control" id="validVotes" type="number" placeholder="Total surat suara sah"
+                                onkeydown="preventInvalidInput(event)" oninput="removeInvalidCharacters(this)">
                         </div>
-
+                        
                         <div class="form-group">
-                            <label class="form-label" for="tps">Surat suara tidak sah</label>
-                            <input class="form-control" id="invalidVotes" type="number"
-                                placeholder="Total surat suara tidak sah">
+                            <label class="form-label" for="invalidVotes">Surat suara tidak sah</label>
+                            <input class="form-control" id="invalidVotes" type="number" placeholder="Total surat suara tidak sah"
+                                onkeydown="preventInvalidInput(event)" oninput="removeInvalidCharacters(this)">
                         </div>
+                        
+                        <script>
+                        // Fungsi untuk mencegah karakter "-" dan "e"
+                        function preventInvalidInput(event) {
+                            if (event.key === '-' || event.key === 'e' || event.key === '+' || event.key === '.') {
+                                event.preventDefault();
+                            }
+                        }
+                        
+                        // Fungsi untuk menghapus karakter non-digit
+                        function removeInvalidCharacters(input) {
+                            input.value = input.value.replace(/[^0-9]/g, '');
+                        }
+                        </script>
+                        
 
                         <p class="text-danger mt-2 mb" style="font-size: 12px;">
                             Pastikan data yang diinput sudah benar, karna hanya bisa melakukan 1x submit laporan tps!
@@ -401,20 +415,42 @@
                             paslonDiv.classList.add('col-6');
 
                             paslonDiv.innerHTML = `
-                        <div class="element-heading">
-                            <label class="form-label" for="paslon_${index}">${paslon.nama_wali_kota}</label>
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" id="paslon_${index}" type="number"
-                                placeholder="Masukan suara untuk ${paslon.nama_wali_kota}" value="${paslon.total_votes}">
-                        </div>
-                    `;
+            <div class="element-heading" style="border: 2px solid #ccc; padding: 10px; border-radius: 8px; margin-bottom: 20px;">
+                <img src="${paslon.foto_paslon}" alt="Foto Paslon ${paslon.nama_wali_kota}" 
+                    style="width: 100%; height: auto; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 10px;">
+                <label class="form-label" for="paslon_${index}">${paslon.nama_wali_kota}</label>
+                <div class="form-group">
+                    <input class="form-control" id="paslon_${index}" type="number"
+                        placeholder="Masukan suara untuk ${paslon.nama_wali_kota}" value="${paslon.total_votes}">
+                </div>
+            </div>
+        `;
+
+                            // Ambil elemen input setelah ditambahkan ke DOM
+                            const inputElement = paslonDiv.querySelector(`#paslon_${index}`);
+
+                            // Event listener untuk mencegah karakter "-" dan "e"
+                            inputElement.addEventListener('keydown', function(event) {
+                                if (event.key === '-' || event.key === 'e' || event.key === '+' || event
+                                    .key === '.') {
+                                    event.preventDefault();
+                                }
+                            });
+
+                            // Event listener untuk memastikan input hanya angka positif
+                            inputElement.addEventListener('input', function(event) {
+                                // Hapus karakter yang tidak diinginkan (non-digit)
+                                this.value = this.value.replace(/[^0-9]/g, '');
+                            });
 
                             paslonContainer.appendChild(paslonDiv);
                         });
                     } else {
                         console.warn('Paslon container not found.');
                     }
+
+
+
                 })
                 .catch(function(error) {
                     console.error('Error calling TPS API:', error);
