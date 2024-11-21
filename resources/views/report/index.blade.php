@@ -8,9 +8,14 @@
                 <h6 id="headingReport">Laporkan Data <b>TPS 001</b></h6>
             </div>
         </div>
+
         <div class="container">
             <div class="card">
                 <div class="card-body">
+                    <div class="alert custom-alert-one alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-x-circle"></i>
+                        Pastikan data yang diinput sudah benar, karna hanya bisa melakukan 1x submit laporan tps!
+                    </div>
                     <form action="#" method="POST" id="tpsForm">
                         <input type="hidden" id="tpsID" value="">
                         <div class="form-group">
@@ -46,18 +51,20 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="image-upload-box" id="uploadArea{{ $photo['id'] }}"
-                                            style="border: 2px dashed #ccc; padding: 30px; cursor: pointer; border-radius: 8px; text-align: center;">
+                                            style="border: 2px dashed #ccc; cursor: pointer; border-radius: 8px; text-align: center; padding: 5px; width: 100%; height: 200px; background-color: #f7f7f7; position: relative;">
                                             <img id="previewImage{{ $photo['id'] }}" class="d-none"
-                                                style="max-width: 100%; height: 78px; border-radius: 8px;" />
+                                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px; position: absolute; top: 0; left: 0;" />
                                             <img id="uploadIcon{{ $photo['id'] }}" class="w-75"
-                                                src="{{ asset('img/icon-image-upload.svg') }}" alt="Upload Icon">
+                                                src="{{ asset('img/icon-image-upload.svg') }}" alt="Upload Icon"
+                                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                             <span id="uploadText{{ $photo['id'] }}" class="mb-4"
-                                                style="font-size: 12px;">Upload Foto</span>
+                                                style="font-size: 12px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);">Upload
+                                                Foto</span>
                                         </div>
                                         <input class="form-control d-none" name="{{ $photo['name'] }}"
                                             id="customFile{{ $photo['id'] }}" type="file" accept="image/*"
                                             capture="camera">
-                                        <button type="button" class="btn btn-secondary mt-2 d-none"
+                                        <button type="button" class="btn btn-sm btn-secondary mt-2 d-none"
                                             id="previewButton{{ $photo['id'] }}" type="button">Preview</button>
                                     </div>
                                 </div>
@@ -98,7 +105,10 @@
                                 placeholder="Total surat suara tidak sah">
                         </div>
 
-                        <button class="btn w-100 d-flex align-items-center justify-content-center"
+                        <p class="text-danger mt-2 mb" style="font-size: 12px;">
+                            Pastikan data yang diinput sudah benar, karna hanya bisa melakukan 1x submit laporan tps!
+                        </p>
+                        <button class="btn w-100 d-flex align-items-center justify-content-center mt-2"
                             style="background: #6C00EB; border-radius: 50px;color: #FFFFFF;" type="button"
                             id="submitFormBtn">
                             Simpan
@@ -109,6 +119,42 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="staticBackdropLabel">Konfirmasi Data</h6>
+                    <button class="btn btn-close p-1 ms-auto" type="button" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0">Apakah Anda yakin dengan data yang telah Anda masukkan?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button id="confirmSubmitBtn" class="btn btn-sm btn-success" type="button">Ya, Kirim Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imagePreviewModalLabel">Image Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalPreviewImage" class="w-100" src="" alt="Image Preview">
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     @include('layouts.menu')
     <style>
@@ -147,6 +193,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.9/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.9/dist/sweetalert2.min.js"></script>
+
     <script>
         function calculateTotal() {
             const totalVotesInput = document.getElementById('totalVotesInput').value;
@@ -158,7 +208,7 @@
             } else {
                 document.getElementById('calculatedResult').value = '';
             }
-            
+
         }
     </script>
     <script>
@@ -213,7 +263,7 @@
                     $("#enable-location").on('click', function() {
                         alert(
                             "Kami akan meminta izin lokasi Anda sekarang. Silakan izinkan untuk melanjutkan."
-                            );
+                        );
                         navigator.geolocation.getCurrentPosition(function(position) {
                             console.log('Lokasi pengguna: ', position.coords.latitude,
                                 position.coords.longitude);
@@ -322,14 +372,19 @@
                     const tpsID = document.getElementById('tpsID');
                     const tpsNumber = document.getElementById('tps');
                     const totalVotesInput = document.getElementById('totalVotesInput');
+                    const calculatedResult = document.getElementById('calculatedResult');
                     const damagedBallots = document.getElementById('damagedBallots');
                     const invalidVotes = document.getElementById('invalidVotes');
                     const headingReport = document.getElementById('headingReport');
                     headingReport.innerHTML = "Laporkan Data <b>TPS " + tps.tps_number + "</b>";
                     if (tpsID || tpsNumber) {
+                        let totalVotes = tps_data.total_ballots;
+                        let reducedVotes = totalVotes - (totalVotes * 0.025);
+                        reducedVotes = Math.round(reducedVotes);
                         tpsID.value = tps.id;
                         tpsNumber.value = "TPS " + tps.tps_number
-                        totalVotesInput.value = tps_data.total_ballots
+                        totalVotesInput.value = reducedVotes;
+                        calculatedResult.value = tps_data.total_ballots
                         invalidVotes.value = tps_data.invalid_votes
                         validVotes.value = tps_data.valid_votes
                         damagedBallots.value = tps_data.damaged_ballots
@@ -368,7 +423,46 @@
     </script>
 
     <script>
+        function checkFormValidity() {
+            const textInputs = document.querySelectorAll('input[type="text"]');
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+
+            let allFilled = true;
+
+            // Cek setiap input bertipe text dan number apakah ada yang kosong
+            textInputs.forEach(function(input) {
+                if (input.value.trim() === '') {
+                    allFilled = false;
+                }
+            });
+
+            numberInputs.forEach(function(input) {
+                if (input.value.trim() === '' || isNaN(input.value) || input.value < 0) {
+                    allFilled = false;
+                }
+            });
+            document.getElementById('submitFormBtn').disabled = !allFilled;
+        }
+
+        document.querySelectorAll('input[type="text"], input[type="number"]').forEach(function(input) {
+            input.addEventListener('input', checkFormValidity);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkFormValidity();
+        });
+
+        function isPositiveNumber(value) {
+            return !isNaN(value) && value >= 0;
+        }
+
         document.getElementById('submitFormBtn').addEventListener('click', function() {
+            const modalElement = document.getElementById('staticBackdrop');
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+
+        document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
             const tpsID = document.getElementById('tpsID').value;
             const coordinates = document.getElementById('coordinates').value;
             const locationDetails = document.getElementById('locationDetails').value;
@@ -387,6 +481,33 @@
                 });
             });
 
+            let errorMessage = '';
+            if (tpsID === '' || coordinates === '' || locationDetails === '') {
+                errorMessage += 'Field TPS ID, Koordinat, dan Detail Lokasi harus diisi.\n';
+            }
+            if (!isPositiveNumber(totalVotes)) {
+                errorMessage += 'Total Suara harus berupa angka positif.\n';
+            }
+            if (!isPositiveNumber(damagedBallots)) {
+                errorMessage += 'Surat Suara Rusak harus berupa angka positif.\n';
+            }
+            if (!isPositiveNumber(validVotes)) {
+                errorMessage += 'Suara Sah harus berupa angka positif.\n';
+            }
+            if (!isPositiveNumber(invalidVotes)) {
+                errorMessage += 'Suara Tidak Sah harus berupa angka positif.\n';
+            }
+            paslon.forEach(function(item, index) {
+                if (!isPositiveNumber(item.total_votes)) {
+                    errorMessage += `Jumlah suara untuk paslon ${index + 1} harus berupa angka positif.\n`;
+                }
+            });
+
+            if (errorMessage !== '') {
+                alert(errorMessage);
+                return;
+            }
+
             const formData = new FormData();
             formData.append('coordinate_location', coordinates);
             formData.append('detail_location', locationDetails);
@@ -400,7 +521,6 @@
                 formData.append(`paslon[${index}][total_votes]`, item.total_votes);
             });
 
-
             const token = localStorage.getItem('token');
 
             axios.post(`{{ env('API_URL') }}/v1/tps/by-user/store/${tpsID}`, formData, {
@@ -411,18 +531,40 @@
                 })
                 .then(function(response) {
                     if (response.data.status === 'success') {
-                        alert('Data has been successfully saved.');
-                        console.log(response.data);
+                        // Show SweetAlert success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Berhasil Dikirim',
+                            text: 'Data Anda telah berhasil disimpan!',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const modal = bootstrap.Modal.getInstance(document.getElementById(
+                                    'staticBackdrop'));
+                                modal.hide();
+                            }
+                        });
                     } else {
-                        alert('Failed to save data.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Gagal menyimpan data, coba lagi!',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 })
                 .catch(function(error) {
                     console.error('Error submitting the form: ', error);
-                    alert('There was an error saving the data.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Terjadi kesalahan saat menyimpan data.',
+                        confirmButtonText: 'OK'
+                    });
                 });
         });
     </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -492,8 +634,10 @@
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        document.getElementById(field.previewImageId).src = e.target.result;
-                        document.getElementById(field.previewImageId).classList.remove('d-none');
+                        const previewImage = document.getElementById(field.previewImageId);
+                        previewImage.src = e.target.result;
+                        previewImage.classList.remove('d-none');
+                        previewImage.style.objectFit = 'cover'; // Ensures no space in the image preview
                         document.getElementById(field.uploadIconId).classList.add('d-none');
                         document.getElementById(field.uploadTextId).classList.add('d-none');
                         document.getElementById(field.previewButtonId).classList.remove('d-none');
@@ -503,6 +647,14 @@
                 }
             }
 
+            // Open modal to show image preview
+            function openImageModal(imageSrc) {
+                const modalImage = document.getElementById('modalPreviewImage');
+                modalImage.src = imageSrc;
+                const myModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'));
+                myModal.show();
+            }
+
             fields.forEach((field, index) => {
                 document.getElementById(field.uploadAreaId).addEventListener('click', function() {
                     document.getElementById(field.customFileId).click();
@@ -510,6 +662,14 @@
 
                 document.getElementById(field.customFileId).addEventListener('change', function(e) {
                     handleFileInputChange(e, field);
+                });
+
+                // Check if the image URL exists and show the preview button
+                document.getElementById(field.previewButtonId).addEventListener('click', function() {
+                    const previewImage = document.getElementById(field.previewImageId);
+                    if (previewImage.src) {
+                        openImageModal(previewImage.src);
+                    }
                 });
             });
 
@@ -531,8 +691,12 @@
                             const previewImage = document.getElementById(field.previewImageId);
                             previewImage.src = tps_data[field.name];
                             previewImage.classList.remove('d-none');
+                            previewImage.style.objectFit =
+                                'cover'; // Ensures no space in the image preview
                             document.getElementById(field.uploadIconId).classList.add('d-none');
                             document.getElementById(field.uploadTextId).classList.add('d-none');
+                            // Show preview button if image URL exists
+                            document.getElementById(field.previewButtonId).classList.remove('d-none');
                         }
                     });
                 })
